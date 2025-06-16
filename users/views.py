@@ -1,5 +1,6 @@
 from django.contrib.auth.models import update_last_login
 from django.shortcuts import render
+from django.conf import settings;
 from django.http import JsonResponse
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
@@ -17,9 +18,10 @@ from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from rest_framework.exceptions import ValidationError
 from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 from django.utils.encoding import force_bytes,force_str
 from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
 class UserList(APIView):
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
@@ -72,7 +74,8 @@ class ForgotPasswordAPIView(APIView):
             'user': user,
             'reset_url': reset_url,
         })
-        send_mail(subject, message, "no-reply@example.com", [email])
+        
+        send_mail(subject=subject, message=message, from_email=settings.EMAIL_HOST_USER, recipient_list=[email,])
 
         return Response({"detail": "Password reset email has been sent."}, status=status.HTTP_200_OK)
 class ResetPasswordAPIView(APIView):

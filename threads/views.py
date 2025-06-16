@@ -16,7 +16,7 @@ from .models import Thread
 from course.models import Course
 from message.models import Message
 from django.shortcuts import get_object_or_404
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, PermissionDenied
 class ThreadListView(ListAPIView):
     queryset = Thread.objects.all()
     serializer_class = SerializeThread
@@ -61,8 +61,13 @@ class ThreadUpdateTitleView(APIView):
 class ThreadDeleteView(DestroyAPIView):
     queryset = Thread.objects.all()
     serializer_class = SerializeThread
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
     lookup_field = 'pk'
+    def get_object(self):
+        thread = super().get_object()
+        if thread.author != self.request.user:
+            raise PermissionDenied("You do not have permission to delete this message.")
+        return thread
     def destroy(self, request, *args, **kwargs):
         # Optionally add custom logic before deletion
         response = super().destroy(request, *args, **kwargs)
