@@ -75,7 +75,8 @@ class ForgotPasswordAPIView(APIView):
             'reset_url': reset_url,
         })
         
-        send_mail(subject=subject, message=message, from_email=settings.EMAIL_HOST_USER, recipient_list=[email,])
+        plain_message = strip_tags(message)
+        send_mail(subject=subject, message=plain_message, from_email=settings.DEFAULT_FROM_EMAIL, recipient_list=[email,],html_message=message)
 
         return Response({"detail": "Password reset email has been sent."}, status=status.HTTP_200_OK)
 class ResetPasswordAPIView(APIView):

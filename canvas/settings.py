@@ -23,7 +23,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST= env('EMAIL_HOST')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -61,10 +61,10 @@ INSTALLED_APPS = [
 ]
 DEFAULT_AUTO_FIELD='django.db.models.AutoField' 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -92,18 +92,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'canvas.wsgi.application'
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
 ]
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-]
-CORS_ORIGIN_ALLOW_ALL = False
 
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000',
-)
+
 
 CORS_ALLOW_METHODS = [
     'DELETE',
@@ -135,7 +132,7 @@ DATABASES = {
         'NAME': 'mydb',
         'USER': 'webuser',
         'PASSWORD': 'secret',
-        'HOST': 'host.docker.internal',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
