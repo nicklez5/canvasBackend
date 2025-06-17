@@ -94,12 +94,17 @@ TEMPLATES = [
 WSGI_APPLICATION = 'canvas.wsgi.application'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://canvasfrontend.onrender.com"
 ]
 CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
+    "https://canvasfrontend.onrender.com"
 ]
-
+CSRF_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = True
 
 
 CORS_ALLOW_METHODS = [
