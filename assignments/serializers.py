@@ -1,6 +1,10 @@
 from rest_framework import serializers
 from .models import AssignmentSubmission,Assignment
 class AssignmentSerializer(serializers.ModelSerializer):
+    description = serializers.CharField(
+        max_length=500, allow_blank=True, required=False,
+        style={'base_template': 'textarea.html'}
+    )
     class Meta:
         model  = Assignment
         fields = ["id", "name", "description", "date_due", "max_points", "assignment_file"]
